@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+ <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; /* Soft background color */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    text-align: center;
+    max-width: 360px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff; /* White container for form */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-field {
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    background-color: #f9f9f9; /* Slightly lighter background for input */
+    transition: border 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #007BFF; /* Blue border on focus */
+}
+
+.submit-button {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #ffffff; /* Darker blue on hover */
+    color: #000;
+    border: 1px solid black;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    .input-field {
+        font-size: 12px;
+    }
+
+    .submit-button {
+        font-size: 14px;
+    }
+}
+
+
+.fluid-gradient {
+    height: 100vh;
+    background: linear-gradient(45deg, #ff9a9e, #fecfef, #fcb69f, #ff7eb9);
+    background-size: 200% 200%;
+    animation: flowingGradient 8s cubic-bezier(0.4, 0.2, 0.6, 0.8) infinite;
+}
+
+@keyframes flowingGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 50% 100%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    75% {
+        background-position: 50% 0%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+ </style>
+</head>
+<body class="fluid-gradient">
+    <div class="container">
+        <h1>Create or Join Chat Room</h1>
+        <form id="room-form" class="form-container">
+            <input type="text" id="username" class="input-field" placeholder="Enter Username" required>
+            <input type="text" id="room-code" class="input-field" placeholder="Room Code" required>
+            <input type="password" id="room-password" class="input-field" placeholder="Room Password" required>
+            <button type="submit" class="submit-button">Join/Create Room</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('room-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const roomCode = document.getElementById('room-code').value;
+            const roomPassword = document.getElementById('room-password').value;
+
+            // Store username in localStorage
+            localStorage.setItem('username', username);
+
+            // Redirect to chat room
+            window.location.href = `/chat/${roomCode}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(roomPassword)}`;
+        });
+    </script>
+</body>
+</html>

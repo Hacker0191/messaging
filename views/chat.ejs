@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Chat Room</title>
+    <style>
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-color: #000;
+    overflow-x: hidden;
+}
+
+/* Chat Container */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #111;
+    border-bottom: 1px solid #333;
+}
+
+.header h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+    display: none;
+    background-color: #111;
+    border-right: 1px solid #333;
+    padding: 10px;
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 8px;
+    border-bottom: 1px solid #333;
+}
+
+/* Chat Area */
+.chat-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 50px);
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #000;
+    height: calc(100vh - 150px); /* Adjust based on header and input sizes */
+}
+
+.media-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #111;
+    position: relative;
+}
+
+.clip-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.file-options {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 70px;
+    left: 10px;
+    color: #000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.file-options button {
+    background: #ddd;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    color: #000;
+    cursor: pointer;
+}
+
+.file-options button:hover {
+    background: #ccc;
+}
+
+/* Message Input */
+.message-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.message-input input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    outline: none;
+    font-size: 1rem;
+    color: #333;
+    background: #fff;
+}
+
+.message-input button {
+    background: #0084ff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.message-input button:hover {
+    background: #005bb5;
+}
+
+/* Chat Messages Styling */
+/* Sent Message */
+.sent-message {
+    background-color: #fff;
+    color: #000;
+    padding: 10px;
+    border-radius: 15px 15px 0 15px;
+    max-width: 70%;
+    align-self: flex-end;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    word-wrap: break-word;
+}
+
+/* Received Message */
+.received-message {
+    background-color: #0077ff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 15px 15px 15px 0;
+    max-width: 70%;
+    align-self: flex-start;
+    margin-bottom: 8px;
+    margin-left: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    word-wrap: break-word;
+}
+
+/* Chat Input Box */
+.message-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #fff; /* Set to white */
+    color: #000;      /* Black text for visibility */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.message-input input::placeholder {
+    color: #aaa; /* Subtle placeholder color */
+}
+
+.message-input button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.message-input button:hover {
+    background-color: #555;
+}
+
+
+/* Ensure the Spotify search input is also styled correctly */
+#spotify-query {
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+}
+
+/* Add placeholder styling for visibility */
+::placeholder {
+    color: #888; /* Light gray for placeholder text */
+    opacity: 1; /* Ensure it's fully visible */
+}
+
+.message-input button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #555;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 250px;
+        height: calc(100vh - 50px);
+        display: none;
+    }
+
+    .sidebar.active {
+        display: block;
+    }
+
+    .chat-area {
+        margin-left: 0;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <header class="header">
+            <button id="toggle-users" class="menu-btn">☰ Active Users</button>
+            <h1>Chat Room</h1>
+        </header>
+
+        <div class="sidebar">
+            <h2>Active Users</h2>
+            <ul id="user-list"></ul>
+        </div>
+
+        <div class="chat-area">
+            <div id="chat-messages" class="chat-messages"></div>
+            
+            <div class="media-buttons">
+                <button id="file-btn" class="clip-btn">📎</button>
+                <input type="file" id="file-upload" style="display:none;">
+                <div id="file-options" class="file-options">
+                    <button id="image-btn">📷 Image</button>
+                    <button id="audio-btn">🎤 Audio</button>
+                    <button id="video-btn">🎥 Video</button>
+                    <button id="spotify-btn">🎵 Spotify</button>
+                </div>
+            </div>
+
+            <div id="spotify-search" style="display:none;">
+                <input type="text" id="spotify-query" placeholder="Search Songs">
+                <div id="spotify-results"></div>
+            </div>
+
+            <div class="message-input">
+                <input type="text" id="message-input" placeholder="Type a message...">
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Toggle Sidebar for Active Users
+        const toggleUsersBtn = document.getElementById('toggle-users');
+        const sidebar = document.querySelector('.sidebar');
+    
+        toggleUsersBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    
+        // Toggle File Options
+        const fileBtn = document.getElementById('file-btn');
+        const fileOptions = document.getElementById('file-options');
+    
+        fileBtn.addEventListener('click', () => {
+            fileOptions.style.display = fileOptions.style.display === 'flex' ? 'none' : 'flex';
+        });
+    
+        // Close File Options on Outside Click
+        document.addEventListener('click', (e) => {
+            if (!fileOptions.contains(e.target) && e.target !== fileBtn) {
+                fileOptions.style.display = 'none';
+            }
+        });
+    </script>
+    
+    
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+    <script src="/js/spotify.js"></script>
+</body>
+</html>
